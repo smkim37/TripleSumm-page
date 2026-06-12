@@ -6,6 +6,14 @@
  ],
  "videos": [
   {
+   "id": "5ERr",
+   "title": "Evangeline Lilly's 30-Hour Home Birth | CONAN on TBS",
+   "duration": 275,
+   "cluster": 5,
+   "ktau": 0.582,
+   "srho": 0.774
+  },
+  {
    "id": "7wm8",
    "title": "BF4 - Animated Funny Battlefield Moments",
    "duration": 217,
@@ -140,14 +148,6 @@
    "cluster": 3,
    "ktau": 0.59,
    "srho": 0.759
-  },
-  {
-   "id": "5ERr",
-   "title": "Evangeline Lilly's 30-Hour Home Birth | CONAN on TBS",
-   "duration": 275,
-   "cluster": 5,
-   "ktau": 0.582,
-   "srho": 0.774
   },
   {
    "id": "QUjr",

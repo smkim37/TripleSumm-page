@@ -40,10 +40,24 @@ async def check_device(browser, name, vp, dpr, mobile):
         'document.documentElement.scrollWidth <= window.innerWidth + 1')
     r['tiles'] = await page.locator('.tile').count()
 
-    # TOC mode: rail visible >=1100px, fab below
+    # first tile should be the featured video (5ERr, Evangeline Lilly | CONAN)
+    r['first_tile'] = await page.evaluate(
+        'document.querySelector(".tile .tile-title")?.textContent.slice(0, 16)')
+
+    # TOC mode: rail visible >=1280px, fab below
     rail = await page.locator('#toc').is_visible()
     fab = await page.locator('#tocFab').is_visible()
-    r['toc_mode_ok'] = (rail and not fab) if vp['width'] >= 1100 else (fab and not rail)
+    r['toc_mode_ok'] = (rail and not fab) if vp['width'] >= 1280 else (fab and not rail)
+    if rail:
+        # rail must sit just right of the 980px content column, labels visible, no overflow
+        r['toc_rail'] = await page.evaluate('''() => {
+          const t = document.getElementById('toc').getBoundingClientRect();
+          const contentRight = (window.innerWidth - 980) / 2 + 980;
+          const label = document.querySelector('#toc a span');
+          return {gap_from_content: Math.round(t.left - contentRight),
+                  fits: t.right <= window.innerWidth,
+                  label_visible: getComputedStyle(label).opacity === '1'};
+        }''')
 
     # mobile sheet open/close
     if not rail:

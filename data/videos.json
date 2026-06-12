@@ -1,0 +1,169 @@
+{
+ "modalities": [
+  "visual",
+  "text",
+  "audio"
+ ],
+ "videos": [
+  {
+   "id": "7wm8",
+   "title": "BF4 - Animated Funny Battlefield Moments",
+   "duration": 217,
+   "cluster": 1,
+   "ktau": 0.775,
+   "srho": 0.928
+  },
+  {
+   "id": "KuS1",
+   "title": "\u043a\u0440\u0435\u043c-\u043a\u0430\u0440\u0430\u043c\u0435\u043b\u044c \u0440\u0435\u0446\u0435\u043f\u0442 kream-karamel",
+   "duration": 233,
+   "cluster": 4,
+   "ktau": 0.782,
+   "srho": 0.914
+  },
+  {
+   "id": "XGwK",
+   "title": "KONG TO PRECISION - PARKOUR TUTORIAL",
+   "duration": 221,
+   "cluster": 8,
+   "ktau": 0.674,
+   "srho": 0.863
+  },
+  {
+   "id": "47vv",
+   "title": "This Is How You Race a Drone in the Snow (FPV)",
+   "duration": 290,
+   "cluster": 3,
+   "ktau": 0.662,
+   "srho": 0.841
+  },
+  {
+   "id": "rvtj",
+   "title": "How I Fill in My Brows (Updated)",
+   "duration": 251,
+   "cluster": 9,
+   "ktau": 0.66,
+   "srho": 0.839
+  },
+  {
+   "id": "9c7a",
+   "title": "2012 Audi TT RS Review - Rough around the edges and demands to be treated that way",
+   "duration": 271,
+   "cluster": 3,
+   "ktau": 0.646,
+   "srho": 0.847
+  },
+  {
+   "id": "Wqcz",
+   "title": "Drop Test: New iPad Air",
+   "duration": 195,
+   "cluster": 0,
+   "ktau": 0.656,
+   "srho": 0.836
+  },
+  {
+   "id": "PPUi",
+   "title": "How to Turn a Dress into a Skirt",
+   "duration": 234,
+   "cluster": 9,
+   "ktau": 0.626,
+   "srho": 0.834
+  },
+  {
+   "id": "34A1",
+   "title": "Federer vs Wawrinka | Who Has The Better Single Handed Backhand?",
+   "duration": 283,
+   "cluster": 8,
+   "ktau": 0.633,
+   "srho": 0.81
+  },
+  {
+   "id": "uvB8",
+   "title": "Best of Both Worlds: The Professor - The Master Ball Handler",
+   "duration": 206,
+   "cluster": 8,
+   "ktau": 0.618,
+   "srho": 0.802
+  },
+  {
+   "id": "ADvy",
+   "title": "Roadfly.com - 2010 Mercedes-Benz CLS 550 Road Test Review",
+   "duration": 233,
+   "cluster": 3,
+   "ktau": 0.614,
+   "srho": 0.789
+  },
+  {
+   "id": "zlEL",
+   "title": "JIMMY BREUER bei Kurt Kr\u00f6mer (April 2011)",
+   "duration": 197,
+   "cluster": 5,
+   "ktau": 0.601,
+   "srho": 0.788
+  },
+  {
+   "id": "BcGb",
+   "title": "Black Ops 2 Funny Killcams",
+   "duration": 277,
+   "cluster": 1,
+   "ktau": 0.593,
+   "srho": 0.769
+  },
+  {
+   "id": "rju5",
+   "title": "[HQ]Cruz Azul vs Toluca (3-0) Jornada 15 - Liga Mx 2012",
+   "duration": 272,
+   "cluster": 8,
+   "ktau": 0.588,
+   "srho": 0.764
+  },
+  {
+   "id": "3ZvM",
+   "title": "Pr\u00e9sentation des pandas",
+   "duration": 129,
+   "cluster": 2,
+   "ktau": 0.541,
+   "srho": 0.733
+  },
+  {
+   "id": "adbv",
+   "title": "\u30d4\u30af\u30df\u30f3\u3067\u716c\u5e1d\u6012\u308b\u3000\u56fd\u66f8\u7de8\u3010\u30ae\u30e3\u30b0\u30de\u30f3\u30ac\u65e5\u548c\u3011",
+   "duration": 270,
+   "cluster": 5,
+   "ktau": 0.533,
+   "srho": 0.732
+  },
+  {
+   "id": "UvJe",
+   "title": "Sukhoi Cobra maneuver",
+   "duration": 253,
+   "cluster": 3,
+   "ktau": 0.59,
+   "srho": 0.759
+  },
+  {
+   "id": "5ERr",
+   "title": "Evangeline Lilly's 30-Hour Home Birth | CONAN on TBS",
+   "duration": 275,
+   "cluster": 5,
+   "ktau": 0.582,
+   "srho": 0.774
+  },
+  {
+   "id": "QUjr",
+   "title": "Gut Aiderbichl: Neue Freiheit f\u00fcr 11 Schimpansen",
+   "duration": 223,
+   "cluster": 2,
+   "ktau": 0.47,
+   "srho": 0.662
+  },
+  {
+   "id": "odE9",
+   "title": "The Twelve Days of Ouran",
+   "duration": 266,
+   "cluster": 8,
+   "ktau": 0.54,
+   "srho": 0.713
+  }
+ ]
+}

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TripleSumm: Adaptive Triple-Modality Fusion for Video Summarization (ICLR 2026)</title>
+<meta name="description" content="TripleSumm adaptively fuses visual, text, and audio modalities frame-by-frame for video summarization. ICLR 2026. Includes MoSu, the first large-scale trimodal video summarization benchmark, and an interactive demo.">
+<meta property="og:title" content="TripleSumm (ICLR 2026)">
+<meta property="og:description" content="Adaptive triple-modality fusion for video summarization — interactive demo, MoSu dataset, state-of-the-art results.">
+<meta property="og:type" content="website">
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="#top">
+      <img src="assets/logo.png" alt="" width="26" height="26">
+      <span>TripleSumm</span>
+    </a>
+    <div class="nav-ext">
+      <a href="https://arxiv.org/abs/2603.01169" aria-label="arXiv" title="arXiv">arXiv</a>
+      <a href="https://github.com/smkim37/TripleSumm" aria-label="GitHub" title="GitHub">
+        <svg viewBox="0 0 16 16" width="17" height="17"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- right-side table of contents (desktop rail / mobile floating sheet) -->
+<aside class="toc" id="toc" aria-label="Table of contents">
+  <a href="#demo"><i></i><span>Demo</span></a>
+  <a href="#motivation"><i></i><span>Motivation</span></a>
+  <a href="#dataset"><i></i><span>Dataset</span></a>
+  <a href="#method"><i></i><span>Method</span></a>
+  <a href="#results"><i></i><span>Results</span></a>
+  <a href="#poster"><i></i><span>Poster</span></a>
+  <a href="#bibtex"><i></i><span>BibTeX</span></a>
+</aside>
+<button class="toc-fab" id="tocFab" aria-label="Open table of contents" aria-expanded="false">
+  <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M4 6h16v2H4V6zm0 5h16v2H4v-2zm0 5h16v2H4v-2z"/></svg>
+</button>
+<div class="toc-sheet" id="tocSheet" hidden>
+  <div class="toc-sheet-backdrop"></div>
+  <nav class="toc-sheet-panel" aria-label="Table of contents">
+    <p>Contents</p>
+    <a href="#demo">Demo</a>
+    <a href="#motivation">Motivation</a>
+    <a href="#dataset">Dataset</a>
+    <a href="#method">Method</a>
+    <a href="#results">Results</a>
+    <a href="#poster">Poster</a>
+    <a href="#bibtex">BibTeX</a>
+  </nav>
+</div>
+
+<header class="hero" id="top">
+  <div class="container">
+    <p class="hero-venue">ICLR 2026</p>
+    <h1 class="hero-title"><span class="grad">TripleSumm</span>: Adaptive Triple&#8209;Modality Fusion for Video Summarization</h1>
+    <p class="hero-authors">
+      <a href="https://smkim37.github.io">Sumin Kim</a><sup>*</sup>,
+      <a href="https://www.linkedin.com/in/hyemin-jeong/">Hyemin Jeong</a><sup>*</sup>,
+      <a href="https://rkdrn79.github.io/">Mingu Kang</a><sup>*</sup>,
+      <a href="https://www.linkedin.com/in/yejin-kim-4479392a6/">Yejin Kim</a>,
+      <a href="https://yoori000.github.io/">Yoori Oh</a><sup>&dagger;</sup>,
+      <a href="https://scholar.google.com/citations?user=M-MfqpMAAAAJ&amp;hl">Joonseok Lee</a><sup>&dagger;</sup>
+    </p>
+    <p class="hero-affil">Seoul National University</p>
+    <p class="hero-affil-note"><sup>*</sup>Equal contribution &nbsp;·&nbsp; <sup>&dagger;</sup>Corresponding authors</p>
+    <div class="hero-buttons">
+      <a class="btn" href="https://arxiv.org/abs/2603.01169"><svg viewBox="0 0 24 24" width="15" height="15"><path fill="currentColor" d="M6 2h9l5 5v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zm8 1.5V8h4.5L14 3.5zM8 12h8v1.5H8V12zm0 3.5h8V17H8v-1.5z"/></svg>arXiv</a>
+      <a class="btn" href="https://arxiv.org/pdf/2603.01169"><svg viewBox="0 0 24 24" width="15" height="15"><path fill="currentColor" d="M6 2h9l5 5v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zm8 1.5V8h4.5L14 3.5z"/></svg>Paper</a>
+      <a class="btn" href="https://github.com/smkim37/TripleSumm"><svg viewBox="0 0 16 16" width="15" height="15"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>Code</a>
+      <a class="btn" href="https://huggingface.co/datasets/hminjeong/TripleSumm-MoSu">🤗 Dataset</a>
+      <a class="btn" href="#bibtex"><svg viewBox="0 0 24 24" width="15" height="15"><path fill="currentColor" d="M9 7h6a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1zm-3 9H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v1H9a3 3 0 0 0-3 3v7z"/></svg>BibTeX</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><b>SOTA</b><span>on 4 benchmarks</span></div>
+      <div class="stat"><b class="stat-vta"><em class="m-v">Visual</em> · <em class="m-t">Text</em> · <em class="m-a">Audio</em></b><span>fused adaptively, frame by frame</span></div>
+      <div class="stat"><b>52,678</b><span>videos in our MoSu dataset</span></div>
+      <div class="stat"><b>1.37M</b><span>parameters only</span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ============================ DEMO ============================ -->
+<section class="section" id="demo">
+  <div class="container">
+    <h2><span class="kicker">Interactive Demo</span>Watch TripleSumm summarize real videos</h2>
+    <p class="lead">
+      All examples below are from the <b>test split</b> of our MoSu benchmark — none were seen during training.
+      As the video plays, the charts follow along in real time: the model's predicted importance against the
+      ground truth (aggregated from 50,000+ real viewers), the selected summary segments, and how the model
+      dynamically shifts its attention across <span class="dot dot-v"></span>visual,
+      <span class="dot dot-t"></span>text, and <span class="dot dot-a"></span>audio at every second.
+      Tap anywhere on the charts to seek, and toggle <b>Summary only</b> to watch just the 15% the model would keep.
+    </p>
+
+    <div class="player card" id="player" hidden>
+      <div class="player-video-wrap">
+        <video id="video" playsinline preload="none"></video>
+        <div class="player-badge" id="summaryBadge" hidden>★ In summary</div>
+        <button class="unmute-btn" id="unmuteBtn" hidden>
+          <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4.03v8.05A4.5 4.5 0 0 0 16.5 12zM14 3.23v2.06a7 7 0 0 1 0 13.42v2.06a9 9 0 0 0 0-17.54z"/></svg>
+          Tap for sound
+        </button>
+      </div>
+      <div class="player-head">
+        <div class="player-title-group">
+          <h3 id="playerTitle"></h3>
+          <p id="playerMeta"></p>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="summaryToggle">
+          <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          <span class="toggle-label">Summary&nbsp;only</span>
+        </label>
+      </div>
+      <div class="charts">
+        <canvas id="chartCanvas"></canvas>
+      </div>
+      <div class="legend">
+        <span><i class="swatch" style="background:var(--gt)"></i>Ground truth</span>
+        <span><i class="swatch" style="background:var(--pred)"></i>TripleSumm</span>
+        <span class="legend-sep"></span>
+        <span><i class="swatch" style="background:var(--mod-v)"></i>Visual</span>
+        <span><i class="swatch" style="background:var(--mod-t)"></i>Text</span>
+        <span><i class="swatch" style="background:var(--mod-a)"></i>Audio</span>
+      </div>
+    </div>
+
+    <p class="gallery-hint">Choose a video — every one is a genuine test-set prediction:</p>
+    <div class="gallery" id="gallery" role="list"></div>
+  </div>
+</section>
+
+<!-- ============================ MOTIVATION ============================ -->
+<section class="section section-alt" id="motivation">
+  <div class="container">
+    <h2><span class="kicker">Motivation</span>The most informative modality changes every moment</h2>
+    <p>
+      Human comprehension of video is inherently multimodal — yet most video summarization models look at
+      pixels alone, or fuse modalities with a fixed recipe. In a real video, the cue that matters
+      <em>changes from moment to moment</em>: when a judge speaks, the <b>transcript</b> carries the meaning;
+      when the performance starts, <b>visuals and audio</b> take over.
+    </p>
+    <figure>
+      <img src="assets/figures/fig1_motivation.png" alt="Illustration of dynamic importance of modalities across a video" loading="lazy" width="1648" height="496">
+      <figcaption>Text is most salient at (a), visual–audio dominate at (b), and all three contribute at (c).
+      A summarizer should re-weigh its senses frame-by-frame — exactly what TripleSumm learns to do.</figcaption>
+    </figure>
+    <div class="cards">
+      <div class="mini-card">
+        <h4>Static fusion fails</h4>
+        <p>Standard self- or cross-attention treats modalities uniformly or anchors on vision, collapsing when non-visual cues dominate the content.</p>
+      </div>
+      <div class="mini-card">
+        <h4>Two orthogonal patterns</h4>
+        <p>Summarization needs <b>intra-modal temporal</b> reasoning (what changed over time?) and <b>inter-modal</b> reasoning (which sense matters now?) — best learned separately.</p>
+      </div>
+      <div class="mini-card">
+        <h4>No trimodal benchmark</h4>
+        <p>No public dataset offered visual + text + audio with reliable importance labels at scale — so we built one.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ DATASET ============================ -->
+<section class="section" id="dataset">
+  <div class="container">
+    <h2><span class="kicker">The MoSu Dataset</span>The first large-scale trimodal summarization benchmark</h2>
+    <p>
+      <b>MoSu</b> (<b>Mo</b>st Replayed Multimodal Video <b>Su</b>mmarization) pairs in-the-wild YouTube videos with
+      YouTube's <em>Most Replayed</em> statistics — frame-level importance distilled from the watch behavior of at
+      least 50,000 viewers per video. Every video comes with synchronized <b>CLIP visual</b>, <b>RoBERTa text</b>,
+      and <b>AST audio</b> features at 1 feature per second.
+    </p>
+    <div class="stat-grid">
+      <div class="stat-card"><b>52,678</b><span>videos</span></div>
+      <div class="stat-card"><b>3,984</b><span>hours of content</span></div>
+      <div class="stat-card"><b>3,406</b><span>topic categories</span></div>
+      <div class="stat-card"><b>50K+</b><span>viewers behind each label</span></div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Dataset</th><th>Visual</th><th>Text</th><th>Audio</th><th>Videos</th><th>Hours</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>SumMe</td><td>✓</td><td>–</td><td>–</td><td>25</td><td>1.1</td></tr>
+          <tr><td>TVSum</td><td>✓</td><td>–</td><td>–</td><td>50</td><td>3.5</td></tr>
+          <tr><td>Mr.HiSum</td><td>✓</td><td>–</td><td>–</td><td>31,892</td><td>1,788</td></tr>
+          <tr><td>TL;DW?</td><td>✓</td><td>✓</td><td>–</td><td>12,160</td><td>629</td></tr>
+          <tr><td>BLiSS</td><td>✓</td><td>✓</td><td>–</td><td>13,303</td><td>1,109</td></tr>
+          <tr><td>MMSum</td><td>✓</td><td>✓</td><td>–</td><td>5,100</td><td>1,230</td></tr>
+          <tr class="row-ours"><td><b>MoSu (ours)</b></td><td>✓</td><td>✓</td><td>✓</td><td><b>52,678</b></td><td><b>3,984</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="footnote">Existing benchmarks are either tiny, visual-only, or bimodal — MoSu is the first to provide all three key modalities at scale.</p>
+  </div>
+</section>
+
+<!-- ============================ METHOD ============================ -->
+<section class="section section-alt" id="method">
+  <div class="container">
+    <h2><span class="kicker">Method</span>Refine in time, fuse across modalities</h2>
+    <p>
+      TripleSumm interleaves two purpose-built blocks. The <b>Multi-scale Temporal block (MST)</b> refines each
+      modality stream with windowed self-attention whose window grows <em>local&nbsp;→&nbsp;global</em> across layers,
+      capturing subtle transitions without losing the overall narrative. The <b>Cross-modal Fusion block (CMF)</b>
+      lets a dedicated <em>fusion token</em> cross-attend to the visual, text, and audio tokens of each frame —
+      its attention weights <em>are</em> the per-frame modality importances you see in the demo above.
+    </p>
+    <figure>
+      <img src="assets/figures/fig2_architecture.png" alt="TripleSumm architecture: encoders, multi-scale temporal block, cross-modal fusion block, prediction head" loading="lazy" width="1648" height="840">
+      <figcaption>Overall architecture. Modality features are projected, aggregated into fusion tokens,
+      refined by MST (lower left), fused by CMF (lower right), and decoded into frame-level importance scores.</figcaption>
+    </figure>
+    <div class="cards">
+      <div class="mini-card">
+        <h4>🪟 Multi-scale temporal</h4>
+        <p>Windowed self-attention with <em>local-to-global</em> schedule (w = 5, 15, 45, N) beats constant windows and full self-attention — at O(w·N) cost.</p>
+      </div>
+      <div class="mini-card">
+        <h4>🎛️ Dynamic per-frame fusion</h4>
+        <p>A neutral fusion token queries all three modalities each second, avoiding the visual bias of asymmetric cross-attention. Dynamic &gt; global &gt; static fusion in ablations.</p>
+      </div>
+      <div class="mini-card">
+        <h4>🪶 Robust &amp; tiny</h4>
+        <p>Gracefully degrades when modalities are missing, and reaches SOTA with only <b>1.37M parameters</b> / 0.97 GFLOPs — 8× smaller than CSTA.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ RESULTS ============================ -->
+<section class="section" id="results">
+  <div class="container">
+    <h2><span class="kicker">Results</span>State of the art on four benchmarks</h2>
+    <p>
+      On MoSu, TripleSumm outperforms every unimodal and multimodal baseline by a wide margin on all metrics —
+      while being the smallest model in the comparison. It also sets the state of the art on Mr.HiSum, SumMe, and
+      TVSum, and generalizes zero-shot to 70-minute long-form videos.
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Method</th><th>Modality</th><th>τ ↑</th><th>ρ ↑</th><th>mAP50 ↑</th><th>mAP15 ↑</th><th>Params ↓</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>VASNet</td><td>V</td><td>0.151</td><td>0.219</td><td>64.49</td><td>31.05</td><td>8.13M</td></tr>
+          <tr><td>PGL-SUM</td><td>V</td><td>0.151</td><td>0.218</td><td>64.97</td><td>30.63</td><td>5.31M</td></tr>
+          <tr><td>CSTA</td><td>V</td><td>0.291</td><td>0.398</td><td>71.77</td><td>40.65</td><td>10.56M</td></tr>
+          <tr><td>A2Summ</td><td>V+T</td><td>0.181</td><td>0.257</td><td>66.48</td><td>35.70</td><td>2.48M</td></tr>
+          <tr><td>SSPVS</td><td>V+T</td><td>0.190</td><td>0.271</td><td>66.10</td><td>32.65</td><td>112.81M</td></tr>
+          <tr><td>Joint-VA</td><td>V+A</td><td>0.190</td><td>0.272</td><td>65.68</td><td>32.25</td><td>4.21M</td></tr>
+          <tr><td>UMT</td><td>V+A</td><td>0.239</td><td>0.334</td><td>68.83</td><td>36.73</td><td>4.66M</td></tr>
+          <tr><td>CFSum</td><td>V+T+A</td><td>0.277</td><td>0.374</td><td>70.97</td><td>38.20</td><td>19.83M</td></tr>
+          <tr class="row-ours"><td><b>TripleSumm (ours)</b></td><td>V+T+A</td><td><b>0.351</b></td><td><b>0.472</b></td><td><b>74.72</b></td><td><b>44.42</b></td><td><b>1.37M</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="footnote">Comparison on the MoSu test set. τ: Kendall's tau, ρ: Spearman's rho against Most-Replayed ground truth.</p>
+    <div class="cards">
+      <div class="mini-card">
+        <h4>+21% τ over the best baseline</h4>
+        <p>0.351 vs 0.291 (CSTA) on MoSu — the gap holds on Mr.HiSum (0.258 vs 0.178) and on human-annotated SumMe / TVSum.</p>
+      </div>
+      <div class="mini-card">
+        <h4>Every modality counts</h4>
+        <p>V+T+A &gt; every bimodal pair &gt; every single modality in ablations — evidence of a genuinely synergistic fusion, not a visual crutch.</p>
+      </div>
+      <div class="mini-card">
+        <h4>Zero-shot on hour-long videos</h4>
+        <p>Trained on ≤8-minute clips, TripleSumm still leads all baselines on 70-minute unseen videos (τ 0.128 vs 0.083 next best).</p>
+      </div>
+    </div>
+
+    <h3 class="sub-heading" id="qualitative">Qualitative: the model knows which sense to trust</h3>
+    <p>
+      The fusion token's attention (middle curves) tracks content with human-like intuition: speech segments pull
+      attention to <span class="dot dot-t"></span>text, performances to <span class="dot dot-a"></span>audio —
+      with no supervision on the weights themselves.
+    </p>
+    <div class="fig-pair">
+      <figure>
+        <img src="assets/figures/fig3a_qualitative.png" alt="Qualitative example: guitar demonstration" loading="lazy" width="824" height="564">
+        <figcaption>Guitar demo — attention shifts between speech and playing.</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/figures/fig3b_qualitative.png" alt="Qualitative example: accordion performance" loading="lazy" width="824" height="564">
+        <figcaption>Accordion performance — audio cues dominate throughout.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ POSTER ============================ -->
+<section class="section section-alt" id="poster">
+  <div class="container">
+    <h2><span class="kicker">Poster</span>One-page overview</h2>
+    <p class="footnote">Pinch or scroll to zoom · drag to pan · double-tap to reset · <a href="assets/poster.png" target="_blank" rel="noopener">open full image ↗</a></p>
+    <div class="poster-viewer" id="posterViewer">
+      <img src="assets/poster.png" alt="TripleSumm ICLR 2026 poster" id="posterImg" loading="lazy" draggable="false" width="2500" height="1429">
+    </div>
+  </div>
+</section>
+
+<!-- ============================ BIBTEX ============================ -->
+<section class="section" id="bibtex">
+  <div class="container">
+    <h2><span class="kicker">Citation</span>BibTeX</h2>
+    <div class="bibtex-box">
+      <button class="copy-btn" id="copyBibtex">Copy</button>
+      <pre><code id="bibtexCode">@inproceedings{kim2026triplesumm,
+  title     = {TripleSumm: Adaptive Triple-Modality Fusion for Video Summarization},
+  author    = {Sumin Kim and Hyemin Jeong and Mingu Kang and Yejin Kim and Yoori Oh and Joonseok Lee},
+  booktitle = {The Fourteenth International Conference on Learning Representations},
+  year      = {2026}
+}</code></pre>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p>TripleSumm · Seoul National University · ICLR 2026</p>
+    <p class="footnote">Demo videos are from the MoSu test split (curated from YouTube-8M); all rights remain with their original creators.
+    Page design inspired by the <a href="https://nerfies.github.io" rel="noopener">Nerfies</a> project page tradition.</p>
+  </div>
+</footer>
+
+<script src="js/player.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

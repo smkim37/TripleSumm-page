@@ -32,6 +32,11 @@ img { max-width: 100%; height: auto; }
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
+/* the site is designed to read like Chrome's 90% zoom on tablet/desktop */
+@media (min-width: 768px) {
+  body { zoom: 0.9; }
+}
+
 .container { max-width: 980px; margin: 0 auto; padding: 0 18px; }
 
 /* ============ nav ============ */
@@ -134,13 +139,29 @@ a:hover { text-decoration: underline; }
   line-height: 1.18; margin: 0 auto 18px; max-width: 21em; font-weight: 700;
 }
 .grad {
-  background: linear-gradient(90deg, var(--mod-v), var(--mod-t) 50%, var(--mod-a));
+  background: linear-gradient(90deg,
+    var(--mod-v), var(--mod-t) 25%, var(--mod-a) 50%, var(--mod-t) 75%, var(--mod-v) 100%);
+  background-size: 200% 100%;
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent; color: transparent;
 }
+@media (prefers-reduced-motion: no-preference) {
+  .grad { animation: grad-slide 7s linear infinite; }
+}
+@keyframes grad-slide {
+  from { background-position: 0% 0; }
+  to   { background-position: -200% 0; }
+}
 .hero-authors { font-size: 16px; margin: 0 0 4px; }
-.hero-authors a { color: var(--text); font-weight: 500; }
-.hero-authors a:hover { color: var(--accent); }
+.hero-authors a {
+  color: var(--text); font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: #c3c9d4;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3.5px;
+  transition: color .15s, text-decoration-color .15s;
+}
+.hero-authors a:hover { color: var(--accent); text-decoration-color: var(--accent); }
 .hero-affil { color: var(--text); margin: 8px 0 3px; font-size: 18px; font-weight: 400; }
 .hero-affil-note { color: var(--muted); margin: 0 0 24px; font-size: 13.5px; }
 .stat b.stat-vta { font-size: 17px; letter-spacing: 0; line-height: 31px; }
@@ -342,6 +363,7 @@ tbody tr + tr td { border-top: 1px solid #f1f3f5; }
 }
 
 /* ============ bibtex ============ */
+#bibtex { padding-bottom: 150px; }
 .bibtex-box { position: relative; }
 .bibtex-box pre {
   background: #0f172a; color: #e2e8f0;

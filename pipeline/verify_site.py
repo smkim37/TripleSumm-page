@@ -39,6 +39,12 @@ async def check_device(browser, name, vp, dpr, mobile):
     r['no_h_overflow'] = await page.evaluate(
         'document.documentElement.scrollWidth <= window.innerWidth + 1')
     r['tiles'] = await page.locator('.tile').count()
+    r['title_ok'] = (await page.title()) == 'TripleSumm (ICLR 2026)'
+    r['zoom'] = await page.evaluate('getComputedStyle(document.body).zoom')
+    r['grad_animated'] = await page.evaluate(
+        'getComputedStyle(document.querySelector(".grad")).animationName === "grad-slide"')
+    r['author_underline'] = await page.evaluate(
+        'getComputedStyle(document.querySelector(".hero-authors a")).textDecorationLine === "underline"')
 
     # first tile should be the featured video (5ERr, Evangeline Lilly | CONAN)
     r['first_tile'] = await page.evaluate(
@@ -52,7 +58,8 @@ async def check_device(browser, name, vp, dpr, mobile):
         # rail must sit just right of the 980px content column, labels visible, no overflow
         r['toc_rail'] = await page.evaluate('''() => {
           const t = document.getElementById('toc').getBoundingClientRect();
-          const contentRight = (window.innerWidth - 980) / 2 + 980;
+          const z = parseFloat(getComputedStyle(document.body).zoom) || 1;
+          const contentRight = (window.innerWidth - 980 * z) / 2 + 980 * z;
           const label = document.querySelector('#toc a span');
           return {gap_from_content: Math.round(t.left - contentRight),
                   fits: t.right <= window.innerWidth,

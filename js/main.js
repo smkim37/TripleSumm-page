@@ -4,6 +4,7 @@
 /* ---------- demo gallery ---------- */
 const player = new DemoPlayer(document.getElementById('player'));
 const gallery = document.getElementById('gallery');
+// test hooks used by pipeline/verify_site.py
 window.__demoPlayer = player;
 window.__player_data_check = () => player.data;
 
@@ -75,19 +76,33 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSheet
 /* ---------- autoplay when the demo player scrolls into view ---------- */
 const videoEl = player.video;
 const unmuteBtn = document.getElementById('unmuteBtn');
+let soundOn = false;   // true after an explicit user tap (tile / unmute / video)
+let userPaused = false; // user paused by tapping the video — don't auto-resume
+
 function syncUnmuteBtn() { unmuteBtn.hidden = !(videoEl.muted && !videoEl.paused); }
 videoEl.addEventListener('play', syncUnmuteBtn);
 videoEl.addEventListener('pause', syncUnmuteBtn);
 videoEl.addEventListener('volumechange', syncUnmuteBtn);
-unmuteBtn.addEventListener('click', () => { videoEl.muted = false; });
+unmuteBtn.addEventListener('click', () => { soundOn = true; videoEl.muted = false; });
+gallery.addEventListener('click', (e) => {
+  if (e.target.closest('.tile')) { soundOn = true; userPaused = false; }
+});
 
-let soundOn = false; // becomes true after an explicit user tap (tile or unmute)
-unmuteBtn.addEventListener('click', () => { soundOn = true; });
-gallery.addEventListener('click', (e) => { if (e.target.closest('.tile')) soundOn = true; });
+// tapping the video toggles play/pause
+videoEl.addEventListener('click', () => {
+  if (videoEl.paused) {
+    soundOn = true; userPaused = false;
+    videoEl.muted = false;
+    videoEl.play().catch(() => {});
+  } else {
+    userPaused = true;
+    videoEl.pause();
+  }
+});
 
 let playerInView = false;
 function tryAutoplay() {
-  if (!playerInView || !player.data || !videoEl.paused) return;
+  if (!playerInView || userPaused || !player.data || !videoEl.paused) return;
   videoEl.muted = !soundOn;
   const p = videoEl.play();
   if (p) p.catch(() => { videoEl.muted = true; videoEl.play().catch(() => {}); });

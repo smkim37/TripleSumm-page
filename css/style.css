@@ -250,7 +250,7 @@ tbody tr + tr td { border-top: 1px solid #f1f3f5; }
 }
 .player { margin: 26px 0 30px; }
 .player-video-wrap { position: relative; background: #000; }
-.player-video-wrap video { display: block; width: 100%; max-height: 64vh; aspect-ratio: 16/9; }
+.player-video-wrap video { display: block; width: 100%; max-height: 64vh; aspect-ratio: 16/9; cursor: pointer; }
 .player-badge {
   position: absolute; top: 12px; right: 12px;
   background: var(--pred); color: #fff;

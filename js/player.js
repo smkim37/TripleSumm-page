@@ -17,6 +17,7 @@ class DemoPlayer {
     this.raf = null;
     this.lastJump = -1;
     this.scrubbing = false;
+    this._loadSeq = 0; // guards against out-of-order fetch resolutions
 
     const css = getComputedStyle(document.documentElement);
     this.C = {
@@ -88,21 +89,30 @@ class DemoPlayer {
     this._resize();
     this._drawEmpty();
 
+    const seq = ++this._loadSeq;
     fetch(`data/v/${meta.id}.json`)
       .then((r) => r.json())
       .then((d) => {
+        if (seq !== this._loadSeq) return; // a newer video was selected meanwhile
         this.data = d;
         this._resize();
         this.draw();
         // playback is orchestrated by main.js (scroll-into-view autoplay)
         this.root.dispatchEvent(new CustomEvent('demo:dataloaded'));
+      })
+      .catch(() => {
+        if (seq !== this._loadSeq) return;
+        this.ctx.clearRect(0, 0, this.W, this.H);
+        this.ctx.fillStyle = this.C.label;
+        this.ctx.font = '12px Inter, sans-serif';
+        this.ctx.fillText('failed to load chart data — the video still plays', this.padL, 40);
       });
   }
 
   /* ---------- layout ---------- */
   _resize() {
     const dpr = window.devicePixelRatio || 1;
-    const w = this.canvas.parentElement.clientWidth - 0;
+    const w = this.canvas.parentElement.clientWidth;
     const narrow = w < 560;
     this.padL = narrow ? 46 : 78;
     this.padR = 8;

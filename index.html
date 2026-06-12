@@ -8,6 +8,9 @@
 <meta property="og:title" content="TripleSumm (ICLR 2026)">
 <meta property="og:description" content="Adaptive triple-modality fusion for video summarization — interactive demo, MoSu dataset, state-of-the-art results.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://smkim37.github.io/TripleSumm-page/">
+<meta property="og:image" content="https://smkim37.github.io/TripleSumm-page/assets/poster.png">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="assets/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -124,7 +127,7 @@
         </label>
       </div>
       <div class="charts">
-        <canvas id="chartCanvas"></canvas>
+        <canvas id="chartCanvas" role="slider" aria-label="Timeline: importance scores, summary segments, and modality attention. Tap or drag to seek."></canvas>
       </div>
       <div class="legend">
         <span><i class="swatch" style="background:var(--gt)"></i>Ground truth</span>

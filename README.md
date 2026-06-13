@@ -1,7 +1,7 @@
 # TripleSumm — Project Page & Interactive Demo (ICLR 2026)
 
 Project page for **TripleSumm: Adaptive Triple-Modality Fusion for Video Summarization**
-(Kim et al., ICLR 2026) — live at **https://smkim37.github.io/TripleSumm-page/**
+(Kim et al., ICLR 2026) — live at **https://sumin-kim.com/TripleSumm-page/**
 
 The centerpiece is an interactive demo of 20 curated videos from the MoSu test split.
 As each video plays, time-synced charts show the model's predicted importance against the
